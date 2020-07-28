@@ -5,14 +5,21 @@ export const notesReducer = (state = [], action) => {
   switch (action.type) {
 
     case types.addNote:
-      return {
-        ...state,
-        notes: [action.payload, ...state.notes, ]
-      }
+      return [ action.payload, ...state ] 
+    
+    case types.loadingNotes:
+      return [ ...action.payload ]
 
+    case types.deleteNote:
+      return state.filter((note) => note.id !== action.payload)
     
-    
+    case types.updateNote:
+      return state.map(
+        note => note.id === action.payload.id
+          ? action.payload
+          : note
+      )
     default:
-      break;
+      return state
   }
 }

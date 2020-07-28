@@ -1,11 +1,9 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 import TitleIcon from '@material-ui/icons/Title';
 import { useForm } from '../../hooks/useForm';
 import { NotesContext } from '../../context/notesContext';
 import { ErrorsContext } from '../../context/errorContext';
-import { notesReducer } from '../../reducers/notesReducer';
-import { types } from '../../types/types';
 
 const Forms = styled.form`
 
@@ -14,7 +12,7 @@ const Forms = styled.form`
   background-color: rgba(36, 36, 35, .6);
   padding: 20px;
   border-radius: 6px;
-  height: 380px;
+  height: 345px;
   
   div {
     
@@ -42,7 +40,8 @@ const Forms = styled.form`
     }
 
     svg {
-      color: white;
+      color: #F5CB5C;
+      font-size: 45px;
     }
 
   }
@@ -62,11 +61,12 @@ const Forms = styled.form`
 
   button {
     width: 100%;
+    height: 45px;
     padding: 10px;
     border: none;
     cursor: pointer;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, .7);
+    background-color: #F5CB5C;
 
     transition: 300ms ease background-color;
 
@@ -78,21 +78,50 @@ const Forms = styled.form`
 `;
 
 export const Form = () => {
-  
-  const [values, handleInputChange] = useForm({
-    name: '',
-    body: ''
-  });
+
+  const { activeNote, editingNote, updateNote } = useContext(NotesContext);
+ 
+  const [values, handleInputChange] = useForm(activeNote);
   const { name, body } = values;
 
   const { setErrorForm } = useContext(ErrorsContext);
-  const { dispatch } = useContext(NotesContext);
+  const {  createNote } = useContext(NotesContext);
 
   
   const handleSubmitNote = (event) => {
     event.preventDefault();
 
-    if (name.length < 5) {
+    if (name.length < 4) {
+      setErrorForm({
+        msg: 'El titulo debe ser minimo de 5 caracteres',
+        error: true
+      });
+
+      return
+    }
+
+    if (body.length < 1) {
+      setErrorForm({
+        msg: 'El mensaje debe ser minimo 1 caracter',
+        error: true
+      })
+
+      return
+    }
+
+    setErrorForm({
+      msg: '',
+      error: false
+    });
+    
+    createNote(values);
+    
+  }
+
+  const handleClickEdit = (event) => {
+    event.preventDefault();
+
+    if (name.length < 4) {
       setErrorForm({
         msg: 'El titulo debe ser minimo de 5 caracteres',
         error: true
@@ -115,20 +144,13 @@ export const Form = () => {
       error: false
     });
 
-    values.id = new Date().getDate();
-    
-    dispatch({
-      type: types.addNote,
-      payload: values
-    })
-    
+    updateNote(values);
+
   }
 
 
   return (
-    <Forms
-      onSubmit={handleSubmitNote}
-    >
+    <Forms>
       <div>
         <TitleIcon />
         <input
@@ -145,13 +167,24 @@ export const Form = () => {
         onChange={handleInputChange}
         value={body}
       ></textarea>
-      <div>
-        <button
-          type="submit"
-        >
-          Guardar
-        </button>
-      </div>
+
+      {
+        (editingNote)
+        ?
+          <button
+            onClick={handleClickEdit}
+          >
+            Editar
+          </button>
+        : 
+          <button
+            onClick={handleSubmitNote}
+          >
+            Guardar
+          </button>
+      }
+
+
     </Forms>
   )
 }
