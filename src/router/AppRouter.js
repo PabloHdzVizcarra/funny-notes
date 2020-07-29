@@ -14,20 +14,19 @@ import { AuthContext } from '../context/authContext';
 import { getDataFirebase } from '../helpers/get-data-firebase';
 import { NotesContext } from '../context/notesContext';
 import { types } from '../types/types';
+import {Spinner} from '../components/spinner/Spinner';
 
 
 export default function App() {
 
   const [isCheck, setIsCheck] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setUserRegister } = useContext(AuthContext);
+  const { setUserRegister, isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const { dispatch } = useContext(NotesContext);
   
   useEffect(() => {
     firebase.auth().onAuthStateChanged( async(user) => {
   
       if (user?.uid) {
-        console.log('Conexion exitosa con firebase');
         setIsLoggedIn(true);
         const { uid, displayName } = user;
         setUserRegister({ uid, displayName });
@@ -41,14 +40,14 @@ export default function App() {
   
       setIsCheck(false);
     })
-  }, [setUserRegister, dispatch]);
+  }, [setUserRegister, dispatch, setIsLoggedIn]);
   
 
   
 
   if (isCheck) {
     return (
-      <h1>Cargando...</h1>
+      <Spinner />
     )
   }
 

@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
-import { useHistory } from 'react-router-dom';
 
 const Nav = styled.div`
   background-color: #333533;
@@ -42,15 +41,15 @@ const Paragraph = styled.p`
 
 
 export const NavBar = () => {
-  
-  const history = useHistory();
-  const {userRegister} = useContext(AuthContext);
+
+  const {userRegister, setIsLoggedIn} = useContext(AuthContext);
 
   const { logoutFirebase } = useContext(AuthContext);
 
   const handleClickLogout = () => {
     logoutFirebase();
-    history.push("/asd")
+    setIsLoggedIn(false);
+    
   }
 
   return (

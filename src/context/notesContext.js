@@ -18,45 +18,65 @@ export const NotesProvider = (props) => {
   }, []);
   
   const createNote = async (note) => {
-    
     let noteAdd;
-    const { uid } = firebase.auth().currentUser;
-    const { id } = await db.collection(`${uid}/notes/data`).add(note);
-    console.log('nota agregada con exito');
 
-    noteAdd = {
-      ...note,
-      id
+    try {
+      
+      const { uid } = firebase.auth().currentUser;
+      const { id } = await db.collection(`${uid}/notes/data`).add(note);
+  
+      noteAdd = {
+        ...note,
+        id
+      }
+  
+      dispatch({
+        type: types.addNote,
+        payload: noteAdd
+      })
+
+    } catch (error) {
+      console.log(error);
     }
-
-    dispatch({
-      type: types.addNote,
-      payload: noteAdd
-    })
+    
 
   }
 
   const updateNote = async (note) => {
-    const { uid } = firebase.auth().currentUser;
-    const { id, name, body } = note;
-    await db.collection(`${uid}/notes/data`).doc(id).set({ name, body });
-    console.log('NOTA ACTUALIZADA');
-    dispatch({
-      type: types.updateNote,
-      payload: note
-    })
-    setActiveNote({ name: '', body: '' });
-    setEditingNote(false);
+
+    try {
+      
+      const { uid } = firebase.auth().currentUser;
+      const { id, name, body } = note;
+      await db.collection(`${uid}/notes/data`).doc(id).set({ name, body });
+      dispatch({
+        type: types.updateNote,
+        payload: note
+      })
+      setActiveNote({ name: '', body: '' });
+      setEditingNote(false);
+
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
-  const deleteNote = async(noteID) => {
-    const { uid } = firebase.auth().currentUser;
-    await db.collection(`${uid}/notes/data`).doc(noteID).delete();
-    console.log('nota borrada exitosamente');
-    dispatch({
-      type: types.deleteNote,
-      payload: noteID
-    })
+  const deleteNote = async (noteID) => {
+    
+    try {
+      
+      const { uid } = firebase.auth().currentUser;
+      await db.collection(`${uid}/notes/data`).doc(noteID).delete();
+      dispatch({
+        type: types.deleteNote,
+        payload: noteID
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
 

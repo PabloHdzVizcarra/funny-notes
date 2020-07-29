@@ -17,6 +17,7 @@ const Forms = styled.form`
   div {
     
     display: flex;
+    width: 100%;
     align-items: center;
     margin-bottom: 10px;
     height: 50px;

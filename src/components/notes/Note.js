@@ -18,12 +18,11 @@ const Contain = styled.div`
 `;
 
 const TitleAndIcon = styled.div`
-  margin: 10px;
+  margin: 0 10px 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: auto;
-  height: 45px;
+  height: fit-content;
 
   svg:first-child {
     margin-right: 5px;

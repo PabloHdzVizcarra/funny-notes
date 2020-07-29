@@ -9,6 +9,7 @@ export const AuthProvider = (props) => {
 
   const { setErrorForm } = useContext(ErrorsContext);
   const [userRegister, setUserRegister] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const startRegisterWithEmailAndPassword = (email, password, userName,) => {
     
@@ -46,7 +47,6 @@ export const AuthProvider = (props) => {
 
     try {
       await firebase.auth().signOut();
-      console.log('Haz cerrado sesion en firebase');
       setUserRegister({});
 
     } catch (error) {
@@ -62,7 +62,6 @@ export const AuthProvider = (props) => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((data) => {
-          console.log('Iniciaste sesion con correo');
           const { user } = data;
           const { uid, displayName } = user;
           setUserRegister({
@@ -80,6 +79,8 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         userRegister,
+        isLoggedIn,
+        setIsLoggedIn,
         startRegisterWithEmailAndPassword,
         logoutFirebase,
         startLoginEmailPassword,

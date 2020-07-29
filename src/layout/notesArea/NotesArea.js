@@ -10,7 +10,8 @@ import { NavBar } from '../../components/navbar/NavBar';
 const Contain = styled.div`
   display: grid;
   grid-template-columns: 100%;
-  padding: 2rem;
+  margin-top: 10px;
+  padding: 5px;
   gap: 20px;
   
   ${respondTo.md`
