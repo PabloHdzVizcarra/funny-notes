@@ -80,13 +80,12 @@ const Forms = styled.form`
 
 export const Form = () => {
 
-  const { activeNote, editingNote, updateNote } = useContext(NotesContext);
+  const { activeNote, editingNote, updateNote, createNote } = useContext(NotesContext);
  
   const [values, handleInputChange] = useForm(activeNote);
   const { name, body } = values;
 
   const { setErrorForm } = useContext(ErrorsContext);
-  const {  createNote } = useContext(NotesContext);
 
   
   const handleSubmitNote = (event) => {
@@ -116,7 +115,6 @@ export const Form = () => {
     });
     
     createNote(values);
-    
   }
 
   const handleClickEdit = (event) => {
@@ -146,7 +144,6 @@ export const Form = () => {
     });
 
     updateNote(values);
-
   }
 
 
