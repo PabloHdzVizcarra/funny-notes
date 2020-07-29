@@ -6,7 +6,7 @@ Simple application for storing notes
 
     npm start
 
-**technologies used**
+**Technologies used**
 
  - React JS
  - Styled Components
