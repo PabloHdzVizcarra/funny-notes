@@ -1,6 +1,6 @@
 # Funny Notes
 
-Simple application for storing notes
+Simple application for storing notes, you must create an account to use the application
 
 **Installation** 
 
